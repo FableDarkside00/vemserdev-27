@@ -1,0 +1,2 @@
+Apenas um texto no vim, porque vim é melhor que nano.
+Mentira, nano é mais intuitivo que vim.
