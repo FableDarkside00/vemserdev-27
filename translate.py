@@ -2,8 +2,8 @@ from deep_translator import GoogleTranslator
 from pathlib import Path
 import glob
 
-#get main folder
-def getRootPath(root_path, range_folder):
+# get source and list files inside based arguments to filter the list
+def getFiles(range_folder, root_path = ".", name_of_folder= "**", name_of_file = "**", extension_file="**" ):
     path_locate = Path(root_path)
     #List subdirectories
     path_located = [location for location in path_locate.iterdir() if location.is_dir()]
@@ -11,20 +11,14 @@ def getRootPath(root_path, range_folder):
     folder_list = []
     for i in range(range_folder):
         folder_names = glob.glob(str(path_located[i]))
-        folder_list.append(folder_names[0])
+        folder_list.extend(folder_names)
 
-    #print(folder_list)
-    return folder_list
-
-# get source and list files inside based arguments to filter the list 
-def listFilesOnTree(source_path=".", name_of_folder= "**", name_of_file = "**", extension_file="**"):
-    for path in range(len(source_path)):
-        source_path = Path(str(source_path[0]))
-    
-    list_of_folder = list(source_path.glob(f"{name_of_folder}/{name_of_file}/{extension_file}"))
-    print(list_of_folder)
-    return list_of_folder
-       
+    #List files
+    files = []
+    for paths in folder_list:
+        files.extend(glob.glob(f"{paths}/{name_of_folder}/{name_of_file}/{extension_file}"))
+   
+    return files
 
 
 def translateText(text, target, source="auto"):
@@ -41,7 +35,6 @@ def createOutFile(translated_text):
 
 text = "Sample of text"
 root = './BipEmulator-master/src/'
-source_path = getRootPath(root, 2)
-listFilesOnTree(source_path)
+print(getFiles(2, root))
 translated_text = translateText(text, "portuguese")
 createOutFile(translated_text)
